@@ -1,5 +1,6 @@
 <%  layout("/layout/boilerplate") %>
 
+
     <h1>All Listing</h1>
 
 
@@ -7,8 +8,8 @@
     
     <% for(let listing of allListings){%>
         <a href="/listings/<%=listing._id%>" class="listing-link">
-            <div class="card col" style="width: 20rem;">
-                <img src="<%= listing.image%>" 
+            <div class="card col listing-card" style="width: 20rem;">
+                <img src="<%= listing.image.url%>" 
                 style="height: 20rem;" class="card-img-top" alt="listing-image">
                 <!-- <div class="card-img-overlay">
                     Apoorva
