@@ -133,12 +133,21 @@
         
       </div>
   
-
+<div class="col-6 mb-3 offset-3">
+  <h3>Where We'll be</h3>
+  
+  <div id="map" class="map"></div>
 
 </div>
+</div>
+<script>
+  const locationFromServer = "<%= listing.location %>".trim();
+  console.log('Setting location:', locationFromServer);
+  window.locationFromServer = locationFromServer; // Set the global variable
+</script>
 
 
-
+<script src="/js/map.js"></script>
 
 
 

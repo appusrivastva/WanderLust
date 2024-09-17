@@ -29,7 +29,7 @@ router.get("/new",isLoggedIn,listingController.rendernewForm)
 
 router.route("/:id")
 .get(wrapAsync(listingController.showListing))
-.put(isLoggedIn,isOwner,validateListing,listingController.updateListing)
+.put(isLoggedIn,isOwner,uploads.single("listing[image]"),validateListing,listingController.updateListing)
 .delete(isLoggedIn,isOwner,wrapAsync(listingController.destroyListing))
 
 

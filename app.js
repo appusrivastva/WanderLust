@@ -24,6 +24,8 @@ const LocalStrategy=require("passport-local")
 const User=require("./models/user.js")
 
 const session=require("express-session")
+const mongostore=require("connect-mongo");
+const MongoStore = require('connect-mongo');
 
 
 
@@ -44,7 +46,8 @@ app.use(express.static(path.join(__dirname,"/public")))
 
 
 // db create
-const MONGO_URL="mongodb://127.0.0.1:27017/wanderlust"
+
+const DB_URL=process.env.ATLASDB_URL;
 main().then(()=>{
     console.log('connected to db')
 }).catch((err)=>{
@@ -52,15 +55,27 @@ main().then(()=>{
 });
 
 async function main(){
-    await mongoose.connect(MONGO_URL);
+    await mongoose.connect(DB_URL);
 }
 
-// basic api create
-app.get('/',(req,res)=>{
-    res.send('hi,i am root ')
-});
+// // basic api create
+// app.get('/',(req,res)=>{
+//     res.send('hi,i am root ')
+// });
+const store=MongoStore.create({
+    mongoUrl:DB_URL,
+    crypto:{
+        secret:process.env.SECRET
+    },
+    touchAfter:24*3600
+})
+
+store.on("error",()=>{
+    console.log("Error in Mongo Session Store")
+})
 const sessionOption={
-    secret:"mysupersecretcode",
+    store,
+    secret:process.env.SECRET,
     resave:false,
     saveUninitialized:true,
     cookie:{
@@ -70,6 +85,8 @@ const sessionOption={
 
     }
 }
+
+
 app.use(session(sessionOption))
 app.use(flash())
 app.use(passport.initialize())
